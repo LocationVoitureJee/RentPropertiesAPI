@@ -7,7 +7,11 @@ import com.RentProperties.RentProperties.exception.ResourceNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.RentProperties.RentProperties.Model.EnergyClassification;
+import com.RentProperties.RentProperties.Model.PropertyType;
+
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 @Service
@@ -18,23 +22,47 @@ public class RentalPropertyService {
 
     // Convert RentalProperty entity to RentalPropertyDto
     private RentalPropertyDto mapToDto(RentalProperty rentalProperty) {
-        RentalPropertyDto dto = new RentalPropertyDto();
-        dto.setId(rentalProperty.getId());
-        dto.setDescription(rentalProperty.getDescription());
-        dto.setTown(rentalProperty.getTown());
-        dto.setAddress(rentalProperty.getAddress());
-        // ... (map the rest of the fields)
-        return dto;
+        return new RentalPropertyDto(
+                rentalProperty.getId(),
+                rentalProperty.getDescription(),
+                rentalProperty.getTown(),
+                rentalProperty.getAddress(),
+                rentalProperty.getPropertyType(),
+                rentalProperty.getRentAmount(),
+                rentalProperty.getSecurityDepositAmount(),
+                rentalProperty.getArea(),
+                rentalProperty.getNumberOfBedrooms(),
+                rentalProperty.getFloorNumber(),
+                rentalProperty.getNumberOfFloors(),
+                rentalProperty.getConstructionYear(),
+                rentalProperty.getEnergyClassification(),
+                rentalProperty.getHasElevator(),
+                rentalProperty.getHasIntercom(),
+                rentalProperty.getHasBalcony(),
+                rentalProperty.getHasParkingSpace()
+        );
     }
 
     // Convert RentalPropertyDto to RentalProperty entity
     private RentalProperty mapToEntity(RentalPropertyDto rentalPropertyDto) {
-        RentalProperty entity = new RentalProperty();
-        entity.setDescription(rentalPropertyDto.getDescription());
-        entity.setTown(rentalPropertyDto.getTown());
-        entity.setAddress(rentalPropertyDto.getAddress());
-        // ... (map the rest of the fields)
-        return entity;
+        RentalProperty rentalProperty = new RentalProperty();
+        rentalProperty.setDescription(rentalPropertyDto.description());
+        rentalProperty.setTown(rentalPropertyDto.town());
+        rentalProperty.setAddress(rentalPropertyDto.address());
+        rentalProperty.setPropertyType(PropertyType.valueOf(rentalPropertyDto.propertyType()));
+        rentalProperty.setRentAmount(rentalPropertyDto.rentAmount());
+        rentalProperty.setSecurityDepositAmount(rentalPropertyDto.securityDepositAmount());
+        rentalProperty.setArea(rentalPropertyDto.area());
+        rentalProperty.setNumberOfBedrooms(rentalPropertyDto.numberOfBedrooms());
+        rentalProperty.setFloorNumber(rentalPropertyDto.floorNumber());
+        rentalProperty.setNumberOfFloors(rentalPropertyDto.numberOfFloors());
+        rentalProperty.setConstructionYear(rentalPropertyDto.constructionYear());
+        rentalProperty.setEnergyClassification(EnergyClassification.valueOf(rentalPropertyDto.energyClassification()));
+        rentalProperty.setHasElevator(rentalPropertyDto.hasElevator());
+        rentalProperty.setHasIntercom(rentalPropertyDto.hasIntercom());
+        rentalProperty.setHasBalcony(rentalPropertyDto.hasBalcony());
+        rentalProperty.setHasParkingSpace(rentalPropertyDto.hasParkingSpace());
+        return rentalProperty;
     }
 
     // Get all rental properties
@@ -53,22 +81,46 @@ public class RentalPropertyService {
 
     // Save rental property
     public void saveRentalProperty(RentalPropertyDto rentalPropertyDto) {
-        RentalProperty entity = mapToEntity(rentalPropertyDto);
-        rentalPropertyRepository.save(entity);
+        RentalProperty rentalProperty = mapToEntity(rentalPropertyDto);
+        rentalPropertyRepository.save(rentalProperty);
     }
 
     // Update rental property
     public void updateRentalProperty(Long id, RentalPropertyDto rentalPropertyDto) {
-        RentalProperty entity = rentalPropertyRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Rental Property not found"));
-        entity.setDescription(rentalPropertyDto.getDescription());
-        entity.setTown(rentalPropertyDto.getTown());
-        entity.setAddress(rentalPropertyDto.getAddress());
-        // ... (map the rest of the fields)
-        rentalPropertyRepository.save(entity);
+        RentalProperty rentalProperty = rentalPropertyRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Rental Property not found"));
+
+        rentalProperty.setDescription(rentalPropertyDto.description());
+        rentalProperty.setTown(rentalPropertyDto.town());
+        rentalProperty.setAddress(rentalPropertyDto.address());
+        rentalProperty.setPropertyType(PropertyType.valueOf(rentalPropertyDto.propertyType()));
+        rentalProperty.setRentAmount(rentalPropertyDto.rentAmount());
+        rentalProperty.setSecurityDepositAmount(rentalPropertyDto.securityDepositAmount());
+        rentalProperty.setArea(rentalPropertyDto.area());
+        rentalProperty.setNumberOfBedrooms(rentalPropertyDto.numberOfBedrooms());
+        rentalProperty.setFloorNumber(rentalPropertyDto.floorNumber());
+        rentalProperty.setNumberOfFloors(rentalPropertyDto.numberOfFloors());
+        rentalProperty.setConstructionYear(rentalPropertyDto.constructionYear());
+        rentalProperty.setEnergyClassification(EnergyClassification.valueOf(rentalPropertyDto.energyClassification()));
+        rentalProperty.setHasElevator(rentalPropertyDto.hasElevator());
+        rentalProperty.setHasIntercom(rentalPropertyDto.hasIntercom());
+        rentalProperty.setHasBalcony(rentalPropertyDto.hasBalcony());
+        rentalProperty.setHasParkingSpace(rentalPropertyDto.hasParkingSpace());
+
+        rentalPropertyRepository.save(rentalProperty);
     }
 
     // Delete rental property by ID
     public void deleteRentalProperty(Long id) {
         rentalPropertyRepository.deleteById(id);
+    }
+
+    // not implement yet
+    public void createRentalProperty(RentalProperty rentalProperty) {
+    }
+
+
+    // not implement yet
+    public void partiallyUpdateRentalProperty(Long id, Map<String, Object> updates) {
     }
 }

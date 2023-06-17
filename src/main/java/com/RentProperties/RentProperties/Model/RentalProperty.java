@@ -1,7 +1,8 @@
 package com.RentProperties.RentProperties.Model;
 
-import jakarta.persistence.*;
 import lombok.Data;
+
+import javax.persistence.*;
 
 @Entity
 @Table(name = "rental_property")

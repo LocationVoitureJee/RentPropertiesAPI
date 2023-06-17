@@ -1,25 +1,27 @@
 package com.RentProperties.RentProperties.Model.dto;
 
-public class RentalPropertyDto {
 
-    private Long id;
-    private String description;
-    private String town;
-    private String address;
-    private String propertyType;
-    private Double rentAmount;
-    private Double securityDepositAmount;
-    private Double area;
-    private Integer numberOfBedrooms;
-    private Integer floorNumber;
-    private Integer numberOfFloors;
-    private String constructionYear;
-    private String energyClassification;
-    private Boolean hasElevator;
-    private Boolean hasIntercom;
-    private Boolean hasBalcony;
-    private Boolean hasParkingSpace;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import lombok.Builder;
 
-    // Getters and Setters
+@Builder
+public record RentalPropertyDto(
+        @JsonProperty("id") Long id,
+        @JsonProperty("description") String description,
+        @JsonProperty("town") String town,
+        @JsonProperty("address") String address,
+        @JsonProperty("propertyType") PropertyTypeDto propertyType,
+        @JsonProperty("rentAmount") Double rentAmount,
+        @JsonProperty("securityDepositAmount") Double securityDepositAmount,
+        @JsonProperty("area") Double area,
+        @JsonProperty("numberOfBedrooms") Integer numberOfBedrooms,
+        @JsonProperty("floorNumber") Integer floorNumber,
+        @JsonProperty("numberOfFloors") Integer numberOfFloors,
+        @JsonProperty("constructionYear") String constructionYear,
+        @JsonProperty("energyClassification") EnergyClassificationDto energyClassification,
+        @JsonProperty("hasElevator") Boolean hasElevator,
+        @JsonProperty("hasIntercom") Boolean hasIntercom,
+        @JsonProperty("hasBalcony") Boolean hasBalcony,
+        @JsonProperty("hasParkingSpace") Boolean hasParkingSpace)  {
 }
 
