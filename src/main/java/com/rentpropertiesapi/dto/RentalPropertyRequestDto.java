@@ -2,6 +2,8 @@ package com.rentpropertiesapi.dto;
 
 import jakarta.validation.constraints.*;
 import lombok.Builder;
+import lombok.NoArgsConstructor;
+
 @Builder
 public record RentalPropertyRequestDto(
         @NotBlank
