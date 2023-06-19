@@ -85,6 +85,9 @@ public class RentalPropertyService {
     }
 
     public void deleteRentalPropertyById(UUID id) {
-        rentalPropertyRepository.findById(id).ifPresent(rentalPropertyRepository::delete);
+        RentalPropertyEntity rentalPropertyEntity = rentalPropertyRepository.findById(id)
+                .orElseThrow(() -> new NotFoundRentalPropertyException("Le bien immobilier " + id + " est introuvable"));
+
+        rentalPropertyRepository.delete(rentalPropertyEntity);
     }
 }

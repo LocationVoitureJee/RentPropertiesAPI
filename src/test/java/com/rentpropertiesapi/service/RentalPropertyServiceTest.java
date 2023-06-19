@@ -4,6 +4,7 @@ import com.rentpropertiesapi.dto.RentalPropertyRequestDto;
 import com.rentpropertiesapi.dto.RentalPropertyResponseDto;
 import com.rentpropertiesapi.exception.NotFoundEnergyClassificationException;
 import com.rentpropertiesapi.exception.NotFoundPropertyTypeException;
+import com.rentpropertiesapi.exception.NotFoundRentalPropertyException;
 import com.rentpropertiesapi.mapper.RentalPropertyDtoMapper;
 import com.rentpropertiesapi.models.EnergyClassificationEntity;
 import com.rentpropertiesapi.models.PropertyTypeEntity;
@@ -101,4 +102,59 @@ public class RentalPropertyServiceTest {
 
         assertThrows(NotFoundEnergyClassificationException.class, () -> rentalPropertyService.createRentalProperty(requestDto));
     }
+    @Test
+    void testGetRentalPropertyByIdValidId() {
+        UUID rentalPropertyId = UUID.randomUUID();
+        RentalPropertyEntity rentalPropertyEntity = mock(RentalPropertyEntity.class);
+        RentalPropertyResponseDto rentalPropertyResponseDto = mock(RentalPropertyResponseDto.class);
+
+        when(rentalPropertyRepository.findById(rentalPropertyId)).thenReturn(Optional.of(rentalPropertyEntity));
+        when(rentalPropertyDtoMapper.mapToDto(rentalPropertyEntity)).thenReturn(rentalPropertyResponseDto);
+
+        RentalPropertyResponseDto result = rentalPropertyService.getRentalPropertyById(rentalPropertyId.toString());
+
+        assertEquals(rentalPropertyResponseDto, result);
+    }
+
+    @Test
+    void testGetRentalPropertyByIdInvalidId() {
+        UUID rentalPropertyId = UUID.randomUUID();
+
+        when(rentalPropertyRepository.findById(rentalPropertyId)).thenReturn(Optional.empty());
+
+        assertThrows(NotFoundRentalPropertyException.class, () -> rentalPropertyService.getRentalPropertyById(rentalPropertyId.toString()));
+    }
+
+
+    @Test
+    void testUpdateRentalPropertyInvalidId() {
+        UUID rentalPropertyId = UUID.randomUUID();
+        RentalPropertyRequestDto requestDto = mock(RentalPropertyRequestDto.class);
+
+        when(rentalPropertyRepository.findById(rentalPropertyId)).thenReturn(Optional.empty());
+
+        assertThrows(NotFoundRentalPropertyException.class, () -> rentalPropertyService.updateRentalProperty(rentalPropertyId, requestDto));
+    }
+
+    // Ajout de tests pour supprimer une propriété
+    @Test
+    void testDeleteRentalPropertyValidId() {
+        UUID rentalPropertyId = UUID.randomUUID();
+
+        when(rentalPropertyRepository.findById(rentalPropertyId)).thenReturn(Optional.of(mock(RentalPropertyEntity.class)));
+
+        rentalPropertyService.deleteRentalPropertyById(rentalPropertyId);
+
+        verify(rentalPropertyRepository).deleteById(rentalPropertyId);
+    }
+
+    @Test
+    void testDeleteRentalPropertyInvalidId() {
+        UUID rentalPropertyId = UUID.randomUUID();
+
+        when(rentalPropertyRepository.findById(rentalPropertyId)).thenReturn(Optional.empty());
+
+        assertThrows(NotFoundRentalPropertyException.class, () -> rentalPropertyService.deleteRentalPropertyById(rentalPropertyId));
+    }
 }
+
