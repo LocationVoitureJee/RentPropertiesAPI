@@ -6,7 +6,7 @@ services:
     container_name: mon_postgres
     environment:
       POSTGRES_PASSWORD: root
-      POSTGRES_DB: test
+      POSTGRES_DB: rent-properties
     volumes:
       - postgres_data:/var/lib/postgresql/data
     ports:
